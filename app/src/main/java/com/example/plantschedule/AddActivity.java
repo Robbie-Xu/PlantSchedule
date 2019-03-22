@@ -34,6 +34,7 @@ public class AddActivity extends AppCompatActivity {
     private static String psname = "";
     private static String pspecies = "";
     private static String pdes = "";
+    public static int flag = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,10 +79,14 @@ public class AddActivity extends AppCompatActivity {
             Bitmap bm = BitmapFactory.decodeFile(FILE_PATH);
             bm = Zoompic.zoomImg(bm,600,400);
             iv.setImageBitmap(bm);
-
+            flag = 1;
         }
     }
     protected void onClickBtnDone(View view){
+        if(flag <= 0){
+            Toast.makeText(this, "Please add a pic for this plant first" , Toast.LENGTH_SHORT).show();
+            return;
+        }
         psname = ((EditText)findViewById(R.id.ed_sname)).getText().toString();
         pspecies = ((EditText)findViewById(R.id.ed_species)).getText().toString();
         pdes = ((EditText)findViewById(R.id.ed_des)).getText().toString();
@@ -95,6 +100,7 @@ public class AddActivity extends AppCompatActivity {
         values.put(PlantContract.PlantEntry.COLUMN_PPICPATH,FILE_PATH);
         db.insert(PlantContract.PlantEntry.TABLE_NAME, null, values);
         Intent intent = new Intent(this, SearchActivity.class);//显示intent
+        flag = 0;
         startActivity(intent);
         finish();
     }

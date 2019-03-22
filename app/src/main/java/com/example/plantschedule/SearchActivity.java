@@ -150,6 +150,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     protected void BtnSearchClick(View view){
+
         Intent it = new Intent(SearchActivity.this, ResultActivity.class);
         Bundle b = new Bundle();
         String str = "";
