@@ -1,12 +1,12 @@
 package com.example.plantschedule;
 
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.provider.BaseColumns;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,19 +17,22 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.plantschedule.data.PlantContract;
 import com.example.plantschedule.data.PlantDbHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Result;
-
-import static com.example.plantschedule.Zoompic.zoomImg;
+import static com.example.plantschedule.Zoompic.adjustImage;
+import static com.example.plantschedule.Zoompic.adjustImage2;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -39,13 +42,13 @@ public class SearchActivity extends AppCompatActivity {
     private ImageView ivPic;
     private BaseAdapter adapter;
     private List<Plant> plantList = new ArrayList<Plant>();
-    private ListView lvSearch;
+    private SwipeMenuListView lvSearch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        lvSearch = (ListView) findViewById(R.id.listSearchPlant);
+        lvSearch = (SwipeMenuListView) findViewById(R.id.listSearchPlant);
 
         PlantDbHelper dbHelper = new PlantDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -122,14 +125,33 @@ public class SearchActivity extends AppCompatActivity {
                 tvName.setText(plantList.get(position).name);
                 tvDescri.setText(plantList.get(position).sname);
                 tvSpeci.setText(plantList.get(position).speci);
-                Bitmap bm = BitmapFactory.decodeFile(plantList.get(position).path);
-                bm = zoomImg(bm,600,400);
+                Bitmap bm = null;
+                bm = adjustImage2(plantList.get(position).path,bm);
                 ivPic.setImageBitmap(bm);
                 return view;
             }
         };
         lvSearch.setAdapter(adapter);
 
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                deleteItem.setWidth(280);
+                deleteItem.setTitle("delete");
+                deleteItem.setTitleSize(18);
+                deleteItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(deleteItem);
+
+            }
+        };
+
+        // 设置 creato
+        lvSearch.setMenuCreator(creator);
         lvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -147,6 +169,55 @@ public class SearchActivity extends AppCompatActivity {
 
 
         });
+
+
+        lvSearch.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        Plant list = plantList.get(position);
+                        PlantDbHelper dbHelper = new PlantDbHelper(SearchActivity.this);
+                        SQLiteDatabase db = dbHelper.getReadableDatabase();
+                        String[] sttr = {""};
+                        sttr[0] =list.name;
+                        Log.w("name","1"+list.name);
+                        db.delete(PlantContract.PlantEntry.TABLE_NAME, PlantContract.PlantEntry.COLUMN_PNAME+"=?",sttr);
+                        File file = new File(list.path);
+                        plantList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        if (!file.exists()) {
+                            Toast.makeText(getApplicationContext(), "file" + list.path + "does not exist", Toast.LENGTH_SHORT).show();
+                            return false;
+                        } else {
+                            if (file.isFile())
+                                return deleteSingleFile(list.path);
+                        }
+
+                        break;
+                }
+                return false;
+            }
+        });
+
+        cursor.close();
+    }
+
+    private boolean deleteSingleFile(String filePath$Name) {
+        File file = new File(filePath$Name);
+
+        if (file.exists() && file.isFile()) {
+            if (file.delete()) {
+                Log.e("--Method--", "Copy_Delete.deleteSingleFile:" + filePath$Name + "success");
+                return true;
+            } else {
+                Toast.makeText(getApplicationContext(), "delete" + filePath$Name + "fail", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), filePath$Name + "does not exist", Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     protected void BtnSearchClick(View view){

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.example.plantschedule.R;
 
-public class PlantDbHelper extends SQLiteOpenHelper {
+public class    PlantDbHelper extends SQLiteOpenHelper {
     public static final String LOG_TAG = PlantDbHelper.class.getSimpleName();
 
     /**
@@ -42,7 +42,9 @@ public class PlantDbHelper extends SQLiteOpenHelper {
                 + PlantContract.PlantEntry.COLUMN_PSPECIES + " TEXT, "
                 + PlantContract.PlantEntry.COLUMN_PDESCRI + " TEXT, "
                 + PlantContract.PlantEntry.COLUMN_PPICPATH + " TEXT, "
-                + PlantContract.PlantEntry.COLUMN_PISMY + " INTEGER NOT NULL DEFAULT 0);";
+                + PlantContract.PlantEntry.COLUMN_PISMY + " INTEGER NOT NULL DEFAULT 0, "
+                + PlantContract.PlantEntry.COLUMN_PLOC + " TEXT );";
+
 
         String SQL_CREATE_RECORDS_TABLE = "CREATE TABLE " + PlantContract.RecordEntry.TABLE_NAME + " ("
                 + PlantContract.RecordEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -54,7 +56,9 @@ public class PlantDbHelper extends SQLiteOpenHelper {
                 + PlantContract.RecordEntry.COLUMN_PWEATHER + " TEXT, "
                 + PlantContract.RecordEntry.COLUMN_PLOC_LON + " REAL, "
                 + PlantContract.RecordEntry.COLUMN_PLOC_LAT + " REAL, "
+                + PlantContract.RecordEntry.COLUMN_PLOC + " TEXT, "
                 + PlantContract.RecordEntry.COLUMN_PEVENTS + " TEXT, "
+                + PlantContract.RecordEntry.COLUMN_PPATH+ " TEXT, "
                 + PlantContract.RecordEntry.COLUMN_PEVENTS_TITLE + " TEXT); ";
 
         // Execute the SQL statement

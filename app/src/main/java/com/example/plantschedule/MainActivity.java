@@ -60,15 +60,8 @@ public class MainActivity extends AppCompatActivity {
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
         Cursor cursor = db.rawQuery("PRAGMA table_info(["+PlantContract.PlantEntry.TABLE_NAME+"])" , null);
-        try {
-            // Display the number of rows in the Cursor (which reflects the number of rows in the
-            // pets table in the database).
-            TextView displayView = (TextView) findViewById(R.id.textView2);
-            displayView.setText("Number of rows: " + cursor.getCount());
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
+
+        cursor.close();
+
     }
 }

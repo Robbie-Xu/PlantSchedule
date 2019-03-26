@@ -7,6 +7,8 @@ class Plant{
     public String speci;
     public String sname;
     public String path;
+    public String location;
+    public int rid;
 
     //Setters
 

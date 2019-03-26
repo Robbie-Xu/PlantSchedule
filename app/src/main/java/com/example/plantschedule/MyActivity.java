@@ -24,7 +24,8 @@ import com.example.plantschedule.data.PlantDbHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.plantschedule.Zoompic.zoomImg;
+import static com.example.plantschedule.Zoompic.adjustImage2;
+
 
 public class MyActivity extends AppCompatActivity {
     private TextView tvName;
@@ -121,11 +122,12 @@ public class MyActivity extends AppCompatActivity {
                 tvName.setText(plantList.get(position).name);
                 tvDescri.setText(plantList.get(position).sname);
                 tvSpeci.setText(plantList.get(position).speci);
-                Bitmap bm = BitmapFactory.decodeFile(plantList.get(position).path);
-                bm = zoomImg(bm,600,400);
+                Bitmap bm = null;
+                bm = adjustImage2(plantList.get(position).path,bm);
                 ivPic.setImageBitmap(bm);
                 return view;
             }
+
         };
         lvMy.setAdapter(adapter);
 
@@ -142,9 +144,44 @@ public class MyActivity extends AppCompatActivity {
                 b.putString("plantname", str);  //string
                 it.putExtras(b);
                 startActivity(it);
+                finish();
+
             }
 
 
         });
     }
+    private Bitmap adjustImage(String absolutePath,Bitmap bm) {
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        // 这个isjustdecodebounds很重要
+        opt.inJustDecodeBounds = true;
+        bm = BitmapFactory.decodeFile(absolutePath, opt);
+
+        // 获取到这个图片的原始宽度和高度
+        int picWidth = opt.outWidth;
+        int picHeight = opt.outHeight;
+
+        // 获取屏的宽度和高度
+
+        int screenWidth = 600;
+        int screenHeight = 400;
+
+        // isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
+        opt.inSampleSize = 1;
+        // 根据屏的大小和图片大小计算出缩放比例
+        if (picWidth > picHeight) {
+            if (picWidth > screenWidth)
+                opt.inSampleSize = picWidth / screenWidth;
+        } else {
+            if (picHeight > screenHeight)
+
+                opt.inSampleSize = picHeight / screenHeight;
+        }
+
+        // 这次再真正地生成一个有像素的，经过缩放了的bitmap
+        opt.inJustDecodeBounds = false;
+        bm = BitmapFactory.decodeFile(absolutePath, opt);
+        return bm;
+    }
+
 }

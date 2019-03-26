@@ -27,7 +27,8 @@ import java.util.List;
 
 import javax.xml.transform.Result;
 
-import static com.example.plantschedule.Zoompic.zoomImg;
+import static com.example.plantschedule.Zoompic.adjustImage;
+import static com.example.plantschedule.Zoompic.adjustImage2;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -63,8 +64,9 @@ public class ResultActivity extends AppCompatActivity {
         };
 
 // Filter results WHERE "title" = 'My Title'
-        String selection = PlantContract.PlantEntry.COLUMN_PNAME+"like?";
-        String[] selectionArgs = {"%"+str+"%"};
+        String selection = PlantContract.PlantEntry.COLUMN_PNAME+" like ?";
+        String[] selectionArgs = {"%" + str[0] + "%"};
+
 
 // How you want the results sorted in the resulting Cursor
         String sortOrder =
@@ -79,7 +81,6 @@ public class ResultActivity extends AppCompatActivity {
                 null,                   // don't filter by row groups
                 sortOrder               // The sort order
         );
-
         for (int i = 0; i < cursor.getCount(); i++) {
 
             cursor.moveToPosition(i);
@@ -125,8 +126,8 @@ public class ResultActivity extends AppCompatActivity {
                 tvName.setText(plantList.get(position).name);
                 tvDescri.setText(plantList.get(position).sname);
                 tvSpeci.setText(plantList.get(position).speci);
-                Bitmap bm = BitmapFactory.decodeFile(plantList.get(position).path);
-                bm = zoomImg(bm,600,400);
+                Bitmap bm = null;
+                bm = adjustImage2(plantList.get(position).path,bm);
                 ivPic.setImageBitmap(bm);
                 return view;
             }
@@ -150,6 +151,7 @@ public class ResultActivity extends AppCompatActivity {
 
 
         });
+        cursor.close();
     }
     protected void BtnSearchClick(){
         Intent it = new Intent(ResultActivity.this, ResultActivity.class); //

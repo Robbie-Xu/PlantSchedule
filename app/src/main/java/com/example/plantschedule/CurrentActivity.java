@@ -7,7 +7,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -17,9 +19,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -28,6 +32,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.plantschedule.data.PlantContract;
 import com.example.plantschedule.data.PlantDbHelper;
 
@@ -38,19 +46,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static com.example.plantschedule.Zoompic.zoomImg;
+import static com.example.plantschedule.Zoompic.adjustImage;
+import static com.example.plantschedule.Zoompic.adjustImage2;
 
 public class CurrentActivity extends AppCompatActivity {
-    private static final String FILE_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath()+"/1.jpg";
+    private static String FILE_PATH = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+
     private static final int    REQUEST_STORAGE_PERMISSION=1;
     private EditText tvName;
     private EditText tvSname;
     private EditText tvSpeci;
-    private EditText edDes;
+    private TextView ldate;
+    private TextView ltitle;
+    private TextView levent;
+    private TextView lid;
     private ImageView ivPic;
+    private ImageView livPic;
     private BaseAdapter adapter;
     private List<Plant> plantList = new ArrayList<Plant>();
-    private ListView lvRecord;
+    private SwipeMenuListView lvRecord;
+    private String strname;
+    private String file_path = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +76,13 @@ public class CurrentActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
 
-
         Intent intent = getIntent();
         String str[] = {""};
         str[0] = intent.getStringExtra("plantname");
-        Log.w("getExtra",str[0]);
+        Log.w("getExtra",str[0]+" ");
 
-        lvRecord = (ListView) findViewById(R.id.lv_record);
+        strname = str[0];
+        lvRecord = (SwipeMenuListView) findViewById(R.id.lv_record);
         TextView tv = (TextView) findViewById(R.id.tv_current);
         tv.setText(str[0]);
 
@@ -113,21 +129,35 @@ public class CurrentActivity extends AppCompatActivity {
         tvName.setText(pl.name);
         tvSname.setText(pl.sname);
         tvSpeci.setText(pl.speci);
-        Bitmap bm = BitmapFactory.decodeFile(pl.path);
-        bm = zoomImg(bm,600,400);
+        Bitmap bm = null;
+        bm = adjustImage2(pl.path,bm);
         ivPic.setImageBitmap(bm);
+        UpdateList(str);
+        cursor.close();
+        db.close();
     }
 
     protected void onClickBtnCamera(View view){
         requestAllPower();
-        Toast.makeText(CurrentActivity.this, "" + FILE_PATH, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent();
+        int idmax = 0;
+        PlantDbHelper dbHelper = new PlantDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select max("+ PlantContract.RecordEntry._ID+") from "+ PlantContract.RecordEntry.TABLE_NAME,null);
+        cursor.moveToFirst();
+        if(cursor.getInt(0) <= 0){
+            idmax = 0;
+        }else {
+            idmax = cursor.getInt(0)+1;
+        }
+
+        file_path = FILE_PATH + "/"+String.valueOf(idmax)+".jpg";
 
         // 指定开启系统相机的Action
         intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         // 根据文件地址创建文件
-        File file = new File(FILE_PATH);
+        File file = new File(file_path);
 
         if (file.exists()) {
             file.delete();
@@ -145,16 +175,20 @@ public class CurrentActivity extends AppCompatActivity {
 
         ImageView iv = findViewById(R.id.iv_current);
         if (requestCode == 0) {
-            Bitmap bm = BitmapFactory.decodeFile(FILE_PATH);
-            bm = zoomImg(bm,600,400);
+            Bitmap bm =null;
+            bm =adjustImage(file_path,bm);
             iv.setImageBitmap(bm);
 
-            Toast.makeText(CurrentActivity.this, "" + "1"+FILE_PATH, Toast.LENGTH_SHORT).show();//显示数据
+            Toast.makeText(CurrentActivity.this, "" + "1"+file_path, Toast.LENGTH_SHORT).show();//显示数据
             Intent it = new Intent(CurrentActivity.this, EditActivity.class); //
             Bundle b = new Bundle();
-            b.putString("path", FILE_PATH);  //string
+            b.putString("path", file_path);  //string
             it.putExtras(b);
+            Bundle c = new Bundle();
+            c.putString("plantname", tvName.getText().toString());  //string
+            it.putExtras(c);
             startActivity(it);
+            finish();
         }
     }
 
@@ -186,20 +220,172 @@ public class CurrentActivity extends AppCompatActivity {
             }
         }
     }
-    public Bitmap zoomImg(Bitmap bm, int newWidth ,int newHeight){
-        // 获得图片的宽高
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // 取得想要缩放的matrix参数
-        Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
-        // 得到新的图片
-        Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
-        return newbm;
+
+
+    public void UpdateList(String[] str){
+
+        PlantDbHelper dbHelper = new PlantDbHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+// Define a projection that specifies which columns from the database
+// you will actually use after this query.
+        String[] projection = {
+                PlantContract.RecordEntry.COLUMN_PDATE,
+                PlantContract.RecordEntry.COLUMN_PEVENTS_TITLE,
+                PlantContract.RecordEntry.COLUMN_PEVENTS,
+                PlantContract.RecordEntry.COLUMN_PPATH,
+                PlantContract.RecordEntry._ID
+        };
+
+        final int id = 0;
+// Filter results WHERE "title" = 'My Title'
+        String selection = PlantContract.RecordEntry.COLUMN_PNAME+"=?";
+        String[] selectionArgs = str;
+// How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                PlantContract.RecordEntry.COLUMN_PNAME + " DESC";
+
+        Cursor cursor = db.query(
+                PlantContract.RecordEntry.TABLE_NAME,   // The table to query
+                projection,             // The array of columns to return (pass null to get all)
+                selection,              // The columns for the WHERE clause
+                selectionArgs,          // The values for the WHERE clause
+                null,                   // don't group the rows
+                null,                   // don't filter by row groups
+                sortOrder               // The sort order
+        );
+
+        for (int i = 0; i < cursor.getCount(); i++) {
+
+            cursor.moveToPosition(i);
+            Plant pl = new Plant();
+            pl.name = cursor.getString(0);
+            pl.sname = cursor.getString(1);
+            pl.speci = cursor.getString(2);
+            pl.path = cursor.getString(3);
+            pl.rid = cursor.getInt(4);
+            plantList.add(pl);
+
+        }
+        adapter = new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return plantList.size();
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                LayoutInflater inflater = CurrentActivity.this.getLayoutInflater();
+                View view;
+
+                if (convertView == null) {
+                    view = inflater.inflate(R.layout.item_layout, null);
+                } else {
+                    view = convertView;
+                    Log.i("info", "有缓存，不需要重新生成" + position);
+                }
+                ldate = (TextView) view.findViewById(R.id.tv_student_name);
+                ltitle = (TextView) view.findViewById(R.id.tv_date);
+                levent = (TextView) view.findViewById(R.id.tv_student_id);
+                livPic = (ImageView)view.findViewById(R.id.item_image);
+                lid = (TextView)view.findViewById(R.id.tv_hideid);
+                ldate.setText(plantList.get(position).name);
+                ltitle.setText(plantList.get(position).speci);
+                levent.setText(plantList.get(position).sname);
+                lid.setText(plantList.get(position).rid+"");
+                Bitmap bm = null;
+                bm = adjustImage2(plantList.get(position).path,bm);
+
+                livPic.setImageBitmap(bm);
+                return view;
+            }
+        };
+        lvRecord.setAdapter(adapter);
+
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                deleteItem.setWidth(280);
+                deleteItem.setTitle("delete");
+                deleteItem.setTitleSize(18);
+                deleteItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(deleteItem);
+
+            }
+        };
+
+        lvRecord.setMenuCreator(creator);
+        lvRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String str = "";
+                ldate = (TextView) view.findViewById(R.id.tv_student_name);//找到Textviewname
+                str = ldate.getText().toString();//得到数据
+                lid = (TextView) view.findViewById(R.id.tv_hideid);
+                int rid1 = Integer.valueOf(lid.getText().toString());
+                Toast.makeText(CurrentActivity.this, "" + str, Toast.LENGTH_SHORT).show();//显示数据
+
+                Intent it = new Intent(CurrentActivity.this, RecordActivity.class); //
+                Bundle b = new Bundle();
+                Bundle c = new Bundle();
+                Bundle d = new Bundle();
+                d.putInt("id",rid1);  //string
+                it.putExtras(d);
+                c.putString("path", file_path);  //string
+                it.putExtras(c);
+                b.putString("plantname", str);  //string
+                it.putExtras(b);
+                startActivity(it);
+
+            }
+
+
+        });
+        lvRecord.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                switch (index) {
+                    case 0:
+                        Plant list = plantList.get(position);
+                        PlantDbHelper dbHelper = new PlantDbHelper(CurrentActivity.this);
+                        SQLiteDatabase db = dbHelper.getReadableDatabase();
+                        String[] sttr = {""};
+                        sttr[0]= String.valueOf(list.rid);
+                        db.delete(PlantContract.RecordEntry.TABLE_NAME, PlantContract.RecordEntry._ID+"=?",sttr);
+                        Log.w("id" , "1"+list.rid);
+                        plantList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
+    public void onClickInfo(View view){
+
+        Log.w("clickinfo",strname+"000000");
+        Intent iit = new Intent(CurrentActivity.this, InfoActivity.class); //
+        Bundle b = new Bundle();
+        b.putString("plantname", strname);  //string
+        iit.putExtras(b);
+        startActivity(iit);
+    }
 
 }

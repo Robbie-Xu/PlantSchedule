@@ -38,27 +38,29 @@
         app:srcCompat="@drawable/bg_alpha1" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/bt_done"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="16dp"
+        android:onClick="onClickCha"
         android:background="@drawable/btn_cha"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button9" />
+        app:layout_constraintEnd_toStartOf="@+id/bt_gou" />
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/bt_gou"
         android:layout_width="61dp"
         android:layout_height="61dp"
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="12dp"
+        android:onClick="onClickGou"
         android:background="@drawable/btn_gou"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/tv_edit1"
+        android:id="@+id/tv_rename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -72,7 +74,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView13" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/ed_event"
         android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -82,7 +84,7 @@
         android:hint="Write down your discover here..."
         android:inputType="textPersonName"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintBottom_toTopOf="@+id/bt_done"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -91,10 +93,10 @@
         android:layout_height="254dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_edit1">
+        app:layout_constraintTop_toBottomOf="@+id/tv_rename">
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cb_water"
             android:layout_width="91dp"
             android:layout_height="23dp"
             android:layout_marginStart="12dp"
@@ -104,12 +106,12 @@
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/cb_ferti"
             android:layout_width="82dp"
             android:layout_height="23dp"
             android:layout_marginTop="64dp"
             android:text="manure"
-            app:layout_constraintStart_toEndOf="@+id/checkBox"
+            app:layout_constraintStart_toEndOf="@+id/cb_water"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <ImageView
@@ -117,14 +119,14 @@
             android:layout_width="24dp"
             android:layout_height="23dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:onClick="onClickLoc"
             app:layout_constraintStart_toEndOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox"
+            app:layout_constraintTop_toBottomOf="@+id/cb_water"
             app:srcCompat="@drawable/loc" />
 
         <EditText
-            android:id="@+id/editText5"
+            android:id="@+id/ed_weather"
             android:layout_width="241dp"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
@@ -133,14 +135,14 @@
             android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/editText4" />
+            app:layout_constraintTop_toBottomOf="@+id/ed_loc" />
 
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:gravity="right"
             android:text="Location:"
             app:layout_constraintStart_toStartOf="parent"
@@ -193,19 +195,19 @@
             app:srcCompat="@drawable/cloud" />
 
         <EditText
-            android:id="@+id/editText4"
+            android:id="@+id/ed_loc"
             android:layout_width="241dp"
-            android:layout_height="35dp"
+            android:layout_height="37dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox3" />
+            app:layout_constraintTop_toBottomOf="@+id/cb_ferti" />
 
         <EditText
-            android:id="@+id/editText7"
+            android:id="@+id/ed_date"
             android:layout_width="99dp"
             android:layout_height="35dp"
             android:layout_marginStart="8dp"
@@ -213,19 +215,19 @@
             android:inputType="textPersonName"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@+id/textView12"
-            app:layout_constraintTop_toBottomOf="@+id/editText6" />
+            app:layout_constraintTop_toBottomOf="@+id/ed_title" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/cb_drug"
             android:layout_width="89dp"
             android:layout_height="23dp"
             android:layout_marginTop="64dp"
             android:text="druguse"
-            app:layout_constraintStart_toEndOf="@+id/checkBox3"
+            app:layout_constraintStart_toEndOf="@+id/cb_ferti"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
         <EditText
-            android:id="@+id/editText6"
+            android:id="@+id/ed_title"
             android:layout_width="99dp"
             android:layout_height="37dp"
             android:layout_marginStart="8dp"

@@ -1,29 +1,53 @@
 package com.example.plantschedule;
 
+import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.plantschedule.data.PlantContract;
 import com.example.plantschedule.data.PlantDbHelper;
 
-import static com.example.plantschedule.Zoompic.zoomImg;
+import org.apache.commons.lang.StringUtils;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.util.List;
+
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import static com.example.plantschedule.Zoompic.adjustImage;
 
 public class SpecialInfoActivity extends AppCompatActivity {
     String str[] = {""};
-    private TextView tvName;
-    private TextView tvSname;
-    private TextView tvSpeci;
+    private EditText tvName;
+    private EditText tvSname;
+    private EditText tvSpeci;
+    private EditText tvLoc;
     private ImageView ivPic;
     private EditText edDes;
     @Override
@@ -33,7 +57,7 @@ public class SpecialInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         str[0] = intent.getStringExtra("plantname");
-
+        Log.w("chaxum",str[0]+"11111111111111111");
         PlantDbHelper dbHelper = new PlantDbHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -44,6 +68,7 @@ public class SpecialInfoActivity extends AppCompatActivity {
                 PlantContract.PlantEntry.COLUMN_PSPECIES,
                 PlantContract.PlantEntry.COLUMN_PPICPATH,
                 PlantContract.PlantEntry.COLUMN_PDESCRI,
+                PlantContract.PlantEntry.COLUMN_PLOC,
         };
 
 // Filter results WHERE "title" = 'My Title'
@@ -71,18 +96,22 @@ public class SpecialInfoActivity extends AppCompatActivity {
             pl.speci = cursor.getString(1);
             pl.path = cursor.getString(2);
             pl.descri = cursor.getString(3);
+            pl.location = cursor.getString(4);
+            Toast.makeText(this," "+pl.location,Toast.LENGTH_SHORT).show();
 
-        tvName = (TextView) findViewById(R.id.tv_name_);
-        tvSname = (TextView) findViewById(R.id.tv_sname_);
-        tvSpeci = (TextView) findViewById(R.id.tv_species_);
+        tvName = (EditText) findViewById(R.id.tv_name_);
+        tvSname = (EditText) findViewById(R.id.tv_sname_);
+        tvSpeci = (EditText) findViewById(R.id.tv_species_);
+        tvLoc = (EditText) findViewById(R.id.tv_loc_);
         ivPic = (ImageView)findViewById(R.id.iv_speinfo_);
         edDes = (EditText)findViewById(R.id.ed_des_);
         tvName.setText(pl.name);
         tvSname.setText(pl.sname);
         tvSpeci.setText(pl.speci);
         edDes.setText(pl.descri);
-        Bitmap bm = BitmapFactory.decodeFile(pl.path);
-        bm = zoomImg(bm,600,400);
+        tvLoc.setText(pl.location);
+        Bitmap bm = null;
+        bm = adjustImage(pl.path,bm);
         ivPic.setImageBitmap(bm);
 
     }
@@ -101,4 +130,5 @@ public class SpecialInfoActivity extends AppCompatActivity {
         startActivity(it);
         finish();
     }
+
 }

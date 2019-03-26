@@ -16,6 +16,7 @@ public final class PlantContract {
         public final static String COLUMN_PISMY = "ismy";
         public final static String COLUMN_PPICPATH = "picpath";
         public final static String COLUMN_PDESCRI = "descri";
+        public final static String COLUMN_PLOC= "loc";
 
     }
 
@@ -34,6 +35,8 @@ public final class PlantContract {
         public final static String COLUMN_PLOC_LAT = "lat";
         public final static String COLUMN_PEVENTS_TITLE = "events_title";
         public final static String COLUMN_PEVENTS = "events";
+        public final static String COLUMN_PLOC= "loc";
+        public final static String COLUMN_PPATH= "picpath";
 
     }
 
