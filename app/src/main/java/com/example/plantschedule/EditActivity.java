@@ -50,7 +50,7 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class EditActivity extends AppCompatActivity {
     private static final int BAIDU_READ_PHONE_STATE = 100;//定位权限请求
     private static final int PRIVATE_CODE = 1315;//开启GPS权限
-    Bitmap bm;
+
     Location location;
     RecordInfo record = new RecordInfo();
     @Override
@@ -69,7 +69,7 @@ public class EditActivity extends AppCompatActivity {
         str = intent.getStringExtra("path");
         Log.w("path",str);
         if(str!=null) {
-
+            Bitmap bm = null;
             bm = Zoompic.adjustImage(str,bm);
             iv.setImageBitmap(bm);
         }
@@ -356,8 +356,8 @@ public class EditActivity extends AppCompatActivity {
         }
     }
     protected void onClickGou(View view){
-        bm.recycle();
-        Log.w("boom", "recycle");
+
+;
         EditText edTitle = (EditText)findViewById(R.id.ed_title);
         EditText edEvent = (EditText)findViewById(R.id.ed_event);
         EditText edDate = (EditText)findViewById(R.id.ed_date);
