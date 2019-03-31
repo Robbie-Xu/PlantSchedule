@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context=".SearchActivity">
+    tools:context=".ResultActivity">
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
-        android:layout_height="738dp"
+        android:layout_height="1252dp"
         android:layout_marginTop="40dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +21,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="410dp"
-        android:layout_height="43dp"
+        android:layout_width="804dp"
+        android:layout_height="62dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,20 +30,19 @@
 
         <Button
             android:id="@+id/btn_search"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:onClick="SearchClick"
+            android:layout_width="68dp"
+            android:layout_height="65dp"
+            android:layout_marginStart="16dp"
             android:background="#00000000"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <Button
             android:id="@+id/btn_plus"
-            android:layout_width="43dp"
+            android:layout_width="62dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="52dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/btn_plus"
-            android:onClick="BtnPlusClick"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
@@ -51,53 +50,54 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/title_bg" />
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="40dp"
+            android:layout_width="72dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/search" />
 
         <EditText
-            android:id="@+id/et_search"
-            android:layout_width="268dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/editText2"
+            android:layout_width="642dp"
+            android:layout_height="52dp"
             android:ems="10"
-            android:hint="type here..."
             android:inputType="textPersonName"
+            android:text="type here..."
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_plus"
-            app:layout_constraintHorizontal_bias="0.288"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/btn_search"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="414dp"
-        android:layout_height="711dp"
+        android:layout_width="810dp"
+        android:layout_height="1226dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
-        <com.baoyz.swipemenulistview.SwipeMenuListView
+        <ListView
             android:id="@+id/listSearchPlant"
-            android:layout_width="366dp"
-            android:layout_height="695dp"
-            android:layout_marginEnd="56dp"
+            android:layout_width="797dp"
+            android:layout_height="1226dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

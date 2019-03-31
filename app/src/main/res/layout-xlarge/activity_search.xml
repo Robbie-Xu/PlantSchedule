@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
-        android:layout_height="738dp"
+        android:layout_height="1237dp"
         android:layout_marginTop="40dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,8 +21,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="410dp"
-        android:layout_height="43dp"
+        android:layout_width="803dp"
+        android:layout_height="57dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,18 +30,18 @@
 
         <Button
             android:id="@+id/btn_search"
-            android:layout_width="40dp"
+            android:layout_width="52dp"
             android:layout_height="wrap_content"
-            android:onClick="SearchClick"
             android:background="#00000000"
+            android:onClick="BtnSearchClick"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
         <Button
             android:id="@+id/btn_plus"
-            android:layout_width="43dp"
+            android:layout_width="62dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="52dp"
+            android:layout_marginEnd="36dp"
             android:background="@drawable/btn_plus"
             android:onClick="BtnPlusClick"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,6 +51,7 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -61,22 +62,23 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="40dp"
+            android:layout_width="66dp"
             android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/search" />
 
         <EditText
             android:id="@+id/et_search"
-            android:layout_width="268dp"
-            android:layout_height="wrap_content"
+            android:layout_width="595dp"
+            android:layout_height="52dp"
             android:ems="10"
             android:hint="type here..."
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_plus"
-            app:layout_constraintHorizontal_bias="0.288"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/btn_search"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
@@ -84,8 +86,8 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="414dp"
-        android:layout_height="711dp"
+        android:layout_width="808dp"
+        android:layout_height="1234dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -94,9 +96,10 @@
 
         <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/listSearchPlant"
-            android:layout_width="366dp"
-            android:layout_height="695dp"
-            android:layout_marginEnd="56dp"
+            android:layout_width="811dp"
+            android:layout_height="1218dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>

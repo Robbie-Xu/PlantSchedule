@@ -33,6 +33,7 @@ import net.sf.json.JSONObject;
 import net.sf.json.JSONArray;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -105,6 +106,7 @@ public class EditActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
+            Toast.makeText(getApplicationContext(),"In processing, please wait...",Toast.LENGTH_LONG).show();
             String stringUrl = "http://api.shujuzhihui.cn/api/weather/dailyweather?appKey=efcdee809802446f9e3c5f291195052f&city=Chongqing";
             HttpURLConnection urlConnection = null;
             BufferedReader reader;
@@ -154,6 +156,10 @@ public class EditActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String jsonInfo) {
+            if(jsonInfo.indexOf("502")>=0||jsonInfo.indexOf("404")>=0||jsonInfo.equals("")){
+                    Toast.makeText(getApplicationContext(),"API may not work well",Toast.LENGTH_LONG).show();
+                    return;
+            }
             //Update the temperature displayed
             JSONObject dataJson = JSONObject.fromObject(jsonInfo);
             WeatherInfo weatherInfo = new WeatherInfo();
@@ -409,12 +415,13 @@ public class EditActivity extends AppCompatActivity {
         File file = new File(record.path);
         if (!file.exists()) {
             Toast.makeText(getApplicationContext(), "file" + record.path + "does not exist", Toast.LENGTH_SHORT).show();
+            finish();
             return false;
         } else {
             if (file.isFile())
+                finish();
                 return deleteSingleFile(record.path);
         }
-        return false;
     }
 
 

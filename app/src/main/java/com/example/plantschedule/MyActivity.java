@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -115,9 +114,9 @@ public class MyActivity extends AppCompatActivity {
                     view = convertView;
                     Log.i("info", "有缓存，不需要重新生成" + position);
                 }
-                tvName = (TextView) view.findViewById(R.id.tv_student_name);
-                tvDescri = (TextView) view.findViewById(R.id.tv_date);
-                tvSpeci = (TextView) view.findViewById(R.id.tv_student_id);
+                tvName = (TextView) view.findViewById(R.id.tv_lineone);
+                tvDescri = (TextView) view.findViewById(R.id.tv_linthree);
+                tvSpeci = (TextView) view.findViewById(R.id.tv_linetwo);
                 ivPic = (ImageView)view.findViewById(R.id.item_image);
                 tvName.setText(plantList.get(position).name);
                 tvDescri.setText(plantList.get(position).sname);
@@ -135,7 +134,7 @@ public class MyActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String str = "";
-                tvName = (TextView) view.findViewById(R.id.tv_student_name);//找到Textviewname
+                tvName = (TextView) view.findViewById(R.id.tv_lineone);//找到Textviewname
                 str = tvName.getText().toString();//得到数据
                 Toast.makeText(MyActivity.this, "" + str, Toast.LENGTH_SHORT).show();//显示数据
 
@@ -150,38 +149,6 @@ public class MyActivity extends AppCompatActivity {
 
 
         });
-    }
-    private Bitmap adjustImage(String absolutePath,Bitmap bm) {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        // 这个isjustdecodebounds很重要
-        opt.inJustDecodeBounds = true;
-        bm = BitmapFactory.decodeFile(absolutePath, opt);
-
-        // 获取到这个图片的原始宽度和高度
-        int picWidth = opt.outWidth;
-        int picHeight = opt.outHeight;
-
-        // 获取屏的宽度和高度
-
-        int screenWidth = 600;
-        int screenHeight = 400;
-
-        // isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
-        opt.inSampleSize = 1;
-        // 根据屏的大小和图片大小计算出缩放比例
-        if (picWidth > picHeight) {
-            if (picWidth > screenWidth)
-                opt.inSampleSize = picWidth / screenWidth;
-        } else {
-            if (picHeight > screenHeight)
-
-                opt.inSampleSize = picHeight / screenHeight;
-        }
-
-        // 这次再真正地生成一个有像素的，经过缩放了的bitmap
-        opt.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(absolutePath, opt);
-        return bm;
     }
 
 }

@@ -19,49 +19,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        displayDatabaseInfo();
     }
 
-    protected void BtnSearchClick(View view){
-        try
-        {
-            //startActivity(new Intent("com.AndroidTest.SecondActivity"));//隐式intent
+    public void BtnSearchClick(View view){
+         //startActivity(new Intent("com.AndroidTest.SecondActivity"));//隐式intent
             Intent intent = new Intent(this, SearchActivity.class);//显示intent
             startActivity(intent);
         }
-        catch (Exception ex)
-        {
-            // 显示异常信息
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
-    protected void BtnMyClick(View view){
-        try
-        {
+    public void BtnMyClick(View view){
+
             //startActivity(new Intent("com.AndroidTest.SecondActivity"));//隐式intent
             Intent intent = new Intent(this, MyActivity.class);//显示intent
             startActivity(intent);
-        }
-        catch (Exception ex)
-        {
-            // 显示异常信息
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-        }
     }
-    private void displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        PlantDbHelper mDbHelper = new PlantDbHelper(this);
 
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        // Perform this raw SQL query "SELECT * FROM pets"
-        // to get a Cursor that contains all rows from the pets table.
-        Cursor cursor = db.rawQuery("PRAGMA table_info(["+PlantContract.PlantEntry.TABLE_NAME+"])" , null);
-
-        cursor.close();
-
-    }
 }

@@ -2,13 +2,10 @@ package com.example.plantschedule;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Environment;
@@ -19,16 +16,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,8 +33,6 @@ import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.plantschedule.data.PlantContract;
 import com.example.plantschedule.data.PlantDbHelper;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -294,9 +286,9 @@ public class CurrentActivity extends AppCompatActivity {
                     view = convertView;
                     Log.i("info", "有缓存，不需要重新生成" + position);
                 }
-                ldate = (TextView) view.findViewById(R.id.tv_student_name);
-                ltitle = (TextView) view.findViewById(R.id.tv_date);
-                levent = (TextView) view.findViewById(R.id.tv_student_id);
+                ldate = (TextView) view.findViewById(R.id.tv_lineone);
+                ltitle = (TextView) view.findViewById(R.id.tv_linthree);
+                levent = (TextView) view.findViewById(R.id.tv_linetwo);
                 livPic = (ImageView)view.findViewById(R.id.item_image);
                 lid = (TextView)view.findViewById(R.id.tv_hideid);
                 ldate.setText(plantList.get(position).name);
@@ -335,7 +327,7 @@ public class CurrentActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String str = "";
-                ldate = (TextView) view.findViewById(R.id.tv_student_name);//找到Textviewname
+                ldate = (TextView) view.findViewById(R.id.tv_lineone);//找到Textviewname
                 str = ldate.getText().toString();//得到数据
                 lid = (TextView) view.findViewById(R.id.tv_hideid);
                 int rid1 = Integer.valueOf(lid.getText().toString());

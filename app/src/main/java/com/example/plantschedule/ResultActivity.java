@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,9 +24,6 @@ import com.example.plantschedule.data.PlantDbHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Result;
-
-import static com.example.plantschedule.Zoompic.adjustImage;
 import static com.example.plantschedule.Zoompic.adjustImage2;
 
 public class ResultActivity extends AppCompatActivity {
@@ -119,9 +115,9 @@ public class ResultActivity extends AppCompatActivity {
                     view = convertView;
                     Log.i("info", "有缓存，不需要重新生成" + position);
                 }
-                tvName = (TextView) view.findViewById(R.id.tv_student_name);
-                tvDescri = (TextView) view.findViewById(R.id.tv_date);
-                tvSpeci = (TextView) view.findViewById(R.id.tv_student_id);
+                tvName = (TextView) view.findViewById(R.id.tv_lineone);
+                tvDescri = (TextView) view.findViewById(R.id.tv_linthree);
+                tvSpeci = (TextView) view.findViewById(R.id.tv_linetwo);
                 ivPic = (ImageView)view.findViewById(R.id.item_image);
                 tvName.setText(plantList.get(position).name);
                 tvDescri.setText(plantList.get(position).sname);
@@ -138,7 +134,7 @@ public class ResultActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String str = "";
-                tvName = (TextView) view.findViewById(R.id.tv_student_name);//找到Textviewname
+                tvName = (TextView) view.findViewById(R.id.tv_lineone);//找到Textviewname
                 str = tvName.getText().toString();//得到数据
                 Toast.makeText(ResultActivity.this, "" + str, Toast.LENGTH_SHORT).show();//显示数据
 
