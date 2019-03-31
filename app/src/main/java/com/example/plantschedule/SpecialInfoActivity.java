@@ -116,7 +116,7 @@ public class SpecialInfoActivity extends AppCompatActivity {
 
     }
 
-    protected void onClickPlus(View view){
+    public void onClickPlus(View view){
         PlantDbHelper dbHelper = new PlantDbHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();

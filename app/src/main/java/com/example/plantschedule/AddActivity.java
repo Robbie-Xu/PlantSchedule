@@ -164,7 +164,7 @@ public class AddActivity extends AppCompatActivity {
         }
     }
 
-    protected void onClickBtnDone(View view) {
+    public void onClickBtnDone(View view) {
         if (flag <= 0) {
             Toast.makeText(this, "Please add a pic for this plant first", Toast.LENGTH_SHORT).show();
             return;

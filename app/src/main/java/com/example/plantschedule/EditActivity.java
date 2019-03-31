@@ -83,10 +83,10 @@ public class EditActivity extends AppCompatActivity {
     }
 
 
-    protected void onClickWeather(View view){
+    public void onClickWeather(View view){
         new DownloadUpdate().execute();
     }
-    protected void onClickLoc(View view){
+    public void onClickLoc(View view){
         showGPSContacts();
 
     }
@@ -361,7 +361,7 @@ public class EditActivity extends AppCompatActivity {
                 break;
         }
     }
-    protected void onClickGou(View view){
+    public void onClickGou(View view){
 
 ;
         EditText edTitle = (EditText)findViewById(R.id.ed_title);
@@ -411,7 +411,7 @@ public class EditActivity extends AppCompatActivity {
 
 
 }
-    protected boolean onClickCha(View view){
+    public boolean onClickCha(View view){
         File file = new File(record.path);
         if (!file.exists()) {
             Toast.makeText(getApplicationContext(), "file" + record.path + "does not exist", Toast.LENGTH_SHORT).show();

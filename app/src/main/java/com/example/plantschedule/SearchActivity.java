@@ -220,7 +220,7 @@ public class SearchActivity extends AppCompatActivity {
         }
     }
 
-    protected void SearchClick(View view){
+    public void SearchClick(View view){
 
         String str = "";
         str =((EditText) findViewById(R.id.et_search)).getText().toString();
@@ -339,7 +339,7 @@ public class SearchActivity extends AppCompatActivity {
         cursor.close();
     }
 
-    protected void BtnPlusClick(View view){
+    public void BtnPlusClick(View view){
         Intent it = new Intent(SearchActivity.this, AddActivity.class);
         startActivity(it);
     }

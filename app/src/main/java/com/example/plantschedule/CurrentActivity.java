@@ -129,7 +129,7 @@ public class CurrentActivity extends AppCompatActivity {
         db.close();
     }
 
-    protected void onClickBtnCamera(View view){
+    public void onClickBtnCamera(View view){
         requestAllPower();
         Intent intent = new Intent();
         int idmax = 0;

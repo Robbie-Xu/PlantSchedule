@@ -92,7 +92,7 @@ public class InfoActivity extends AppCompatActivity {
 
     }
 
-    protected void onClickBack(View view){
+    public void onClickBack(View view){
 
         finish();
     }
