@@ -85,6 +85,7 @@ public class EditActivity extends AppCompatActivity {
 
     public void onClickWeather(View view){
         new DownloadUpdate().execute();
+        Toast.makeText(getApplicationContext(),"In processing, please wait...",Toast.LENGTH_LONG).show();
     }
     public void onClickLoc(View view){
         showGPSContacts();
@@ -106,7 +107,7 @@ public class EditActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            Toast.makeText(getApplicationContext(),"In processing, please wait...",Toast.LENGTH_LONG).show();
+
             String stringUrl = "http://api.shujuzhihui.cn/api/weather/dailyweather?appKey=efcdee809802446f9e3c5f291195052f&city=Chongqing";
             HttpURLConnection urlConnection = null;
             BufferedReader reader;

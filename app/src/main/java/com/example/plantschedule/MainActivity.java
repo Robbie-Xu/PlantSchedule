@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        createDatabase();
     }
 
     public void BtnSearchClick(View view){
@@ -33,5 +33,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MyActivity.class);//显示intent
             startActivity(intent);
     }
+    private void createDatabase() {
+        PlantDbHelper mDbHelper = new PlantDbHelper(this);
 
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+    }
 }

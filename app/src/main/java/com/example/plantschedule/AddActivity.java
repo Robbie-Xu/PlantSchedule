@@ -193,11 +193,11 @@ public class AddActivity extends AppCompatActivity {
     public void requestAllPower() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PERMISSION_GRANTED) {
+                != PERMISSION_GRANTED) {                             //check the permission
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             } else {
-                ActivityCompat.requestPermissions(this,
+                ActivityCompat.requestPermissions(this,    //request the permission, give requestCode
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
             }
@@ -206,9 +206,9 @@ public class AddActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);   //feedback
 
-        if (requestCode == 1) {
+        if (requestCode == 1) {                                                     //compare permission requested.
             for (int i = 0; i < permissions.length; i++) {
                 if (grantResults[i] == PERMISSION_GRANTED) {
                     Toast.makeText(this, "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
@@ -217,7 +217,7 @@ public class AddActivity extends AppCompatActivity {
                 }
             }
         }
-        if (requestCode == BAIDU_READ_PHONE_STATE)
+        if (requestCode == BAIDU_READ_PHONE_STATE)                                   //compare permission requested.
             //如果用户取消，permissions可能为null.
             if (grantResults.length > 0) {  //有权限
                 // 获取到权限，作相应处理
